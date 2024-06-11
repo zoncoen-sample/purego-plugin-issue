@@ -1,0 +1,22 @@
+name: build
+on:
+  push:
+  pull_request:
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        version: [0.5.1, 0.6.1, 0.7.1]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: stable
+        check-latest: true
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Build
+      run: make build/${{ matrix.version }}
